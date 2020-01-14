@@ -19,19 +19,20 @@ public class Hydration implements IHydration {
 
     @Override
     public void setHydration(int value) {
+
         this.playerHydration = value;
+
+        // range check: hydration can never be lower than 0 or greater than 20
+        if (playerHydration > MAX_HYDRATION) {
+            this.playerHydration = MAX_HYDRATION;
+        }
+        else if (playerHydration < 0){
+            this.playerHydration = 0;
+        }
     }
 
     @Override
     public int getHydration() {
-
-        // range check: hydration can never be lower than 0 or greater than 20
-        if (playerHydration > MAX_HYDRATION) {
-            return MAX_HYDRATION;
-        }
-        else if (playerHydration < 0){
-            return 0;
-        }
         return playerHydration;
     }
 
@@ -46,7 +47,7 @@ public class Hydration implements IHydration {
     }
 
     public static IHydration getFromPlayer(PlayerEntity player) {
-        return null;
+        return player.getCapability(HydrationProvider.PLAYER_HYDRATION, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"));
     }
 
     public static void updateClient(ServerPlayerEntity player, IHydration cap) {

@@ -7,6 +7,8 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
+import javax.annotation.Nonnull;
+
 public class HydrationProvider implements ICapabilitySerializable<CompoundNBT> {
 
     @CapabilityInject(IHydration.class)
@@ -16,8 +18,9 @@ public class HydrationProvider implements ICapabilitySerializable<CompoundNBT> {
     private final LazyOptional<IHydration> instance = LazyOptional.of(PLAYER_HYDRATION::getDefaultInstance);
 
 
+    @Nonnull
     @Override // getter for the capability
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
         return cap == PLAYER_HYDRATION ? instance.cast() : LazyOptional.empty();
     }
 

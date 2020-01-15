@@ -7,8 +7,6 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-import javax.annotation.Nonnull;
-
 public class HydrationProvider implements ICapabilitySerializable<CompoundNBT> {
 
     @CapabilityInject(IHydration.class)

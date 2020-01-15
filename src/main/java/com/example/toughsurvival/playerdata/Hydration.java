@@ -23,10 +23,10 @@ public class Hydration implements IHydration {
         this.playerHydration = value;
 
         // range check: hydration can never be lower than 0 or greater than 20
-        if (playerHydration > MAX_HYDRATION) {
+        if (this.playerHydration > MAX_HYDRATION) {
             this.playerHydration = MAX_HYDRATION;
         }
-        else if (playerHydration < 0){
+        else if (this.playerHydration < 0){
             this.playerHydration = 0;
         }
     }

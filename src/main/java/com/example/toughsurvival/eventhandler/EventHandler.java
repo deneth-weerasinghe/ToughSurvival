@@ -1,5 +1,8 @@
-package com.example.toughsurvival.playerdata;
+package com.example.toughsurvival.eventhandler;
 
+import com.example.toughsurvival.playerdata.Hydration;
+import com.example.toughsurvival.playerdata.HydrationProvider;
+import com.example.toughsurvival.playerdata.IHydration;
 import com.example.toughsurvival.setup.ToughSurvival;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -8,12 +11,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
-public class test {
+public class EventHandler {
 
     @SubscribeEvent
     public static void onEntityConstruction(AttachCapabilitiesEvent<Entity> event){
@@ -23,13 +27,30 @@ public class test {
     }
 
     @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event){
+
+        PlayerEntity oldPlayer = event.getOriginal(); // the player entity that was deleted
+        PlayerEntity newPlayer = event.getPlayer(); // the current player entity
+
+        IHydration oldData = Hydration.getFromPlayer(oldPlayer);
+        IHydration newData = Hydration.getFromPlayer(newPlayer);
+
+        if (event.isWasDeath()){ // checks if the cloning is caused by death or changing dimensions
+            newData.setHydration(Hydration.RESPAWN_HYDRATION);
+            newData.setDecayFactor(Hydration.DEFAULT_DECAY);
+        }
+        else {
+            newData.setHydration(oldData.getHydration());
+            newData.setDecayFactor(oldData.getDecayFactor());
+        }
+    }
+
+    @SubscribeEvent
     public static void onRightClick(PlayerInteractEvent.RightClickBlock event){
         World world = event.getWorld();
         if (!world.isRemote){
 
-            ToughSurvival.LOGGER.debug("SERVER");
             Block testblock = world.getBlockState(event.getPos()).getBlock();
-            ToughSurvival.LOGGER.debug("RIGHT CLICK!");
             PlayerEntity player = event.getPlayer();
             IHydration cap = Hydration.getFromPlayer(player);
 

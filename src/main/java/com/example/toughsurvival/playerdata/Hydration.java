@@ -7,6 +7,7 @@ public class Hydration implements IHydration {
 
     // will be useful in other situations for instance when drawing the hydration bar
     public static final int MAX_HYDRATION = 20;
+    public static final int RESPAWN_HYDRATION = 16;
     public static final float DEFAULT_DECAY = 1f;
 
     private int playerHydration;

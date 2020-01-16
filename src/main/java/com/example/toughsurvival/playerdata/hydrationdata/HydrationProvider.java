@@ -1,4 +1,4 @@
-package com.example.toughsurvival.playerdata;
+package com.example.toughsurvival.playerdata.hydrationdata;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;

@@ -1,26 +1,21 @@
 package com.example.toughsurvival.setup;
 
-import com.example.toughsurvival.playerdata.Hydration;
-import com.example.toughsurvival.playerdata.HydrationStorage;
-import com.example.toughsurvival.playerdata.IHydration;
+import com.example.toughsurvival.networking.PacketManager;
+import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
+import com.example.toughsurvival.playerdata.hydrationdata.HydrationStorage;
+import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 
@@ -47,6 +42,7 @@ public class ToughSurvival {
 
         LOGGER.info("REGISTERING HYDRATION CAPABILITY");
         CapabilityManager.INSTANCE.register(IHydration.class, new HydrationStorage(), Hydration::new);
+        PacketManager.register();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

@@ -1,7 +1,10 @@
-package com.example.toughsurvival.playerdata;
+package com.example.toughsurvival.playerdata.hydrationdata;
 
+import com.example.toughsurvival.networking.HydrationSync;
+import com.example.toughsurvival.networking.PacketManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 
 public class Hydration implements IHydration {
 
@@ -52,6 +55,6 @@ public class Hydration implements IHydration {
     }
 
     public static void updateClient(ServerPlayerEntity player, IHydration cap) {
-
+        PacketManager.sendTo(player, new HydrationSync(player.getEntityId(), (CompoundNBT) HydrationProvider.PLAYER_HYDRATION.writeNBT(cap, null)));
     }
 }

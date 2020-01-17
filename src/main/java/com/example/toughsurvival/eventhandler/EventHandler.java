@@ -11,10 +11,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ToolItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -37,6 +35,14 @@ public class EventHandler {
     public static void onItemConstruction(AttachCapabilitiesEvent<ItemStack> event){
         if (event.getObject().getItem() == Items.GUNPOWDER){
             event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "itemhydration"), new ItemHydrProvider());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLogIn(PlayerEvent.PlayerLoggedInEvent event){
+        PlayerEntity player = event.getPlayer();
+        if (player instanceof ServerPlayerEntity){
+            Hydration.updateClient((ServerPlayerEntity) player, Hydration.getFromPlayer(player));
         }
     }
 

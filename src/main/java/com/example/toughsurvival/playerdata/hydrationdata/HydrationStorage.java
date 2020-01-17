@@ -1,6 +1,5 @@
 package com.example.toughsurvival.playerdata.hydrationdata;
 
-import com.example.toughsurvival.setup.ToughSurvival;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -17,9 +16,6 @@ public class HydrationStorage implements Capability.IStorage<IHydration> {
         CompoundNBT tag = new CompoundNBT();
         tag.putInt(HYDRATION_TAG, instance.getHydration());
         tag.putFloat(HYDRATION_DECAY_TAG, instance.getDecayFactor());
-
-        ToughSurvival.LOGGER.debug("writing NBT, hydration = " + tag.getInt(HYDRATION_TAG));
-        ToughSurvival.LOGGER.debug("writing NBT, decayFactor = " + tag.getFloat(HYDRATION_DECAY_TAG));
 
         return tag;
     }

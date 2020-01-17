@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ItemHydrProvider implements ICapabilitySerializable<CompoundNBT> {
+
     @CapabilityInject(IItemHydration.class)
     public static Capability<IItemHydration> ITEM_HYDRATION = null;
     private final LazyOptional<IItemHydration> instance = LazyOptional.of(ITEM_HYDRATION::getDefaultInstance);
@@ -22,11 +23,13 @@ public class ItemHydrProvider implements ICapabilitySerializable<CompoundNBT> {
 
     @Override
     public CompoundNBT serializeNBT() {
-        return null;
+        return (CompoundNBT) ITEM_HYDRATION.getStorage().writeNBT(ITEM_HYDRATION, this.instance.orElseThrow(
+                () -> new IllegalArgumentException("LazyOptional must not be empty!")), null);
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-
+        ITEM_HYDRATION.getStorage().readNBT(ITEM_HYDRATION, this.instance.orElseThrow(
+                () -> new IllegalArgumentException("LazyOptional must not be empty!")), null, nbt);
     }
 }

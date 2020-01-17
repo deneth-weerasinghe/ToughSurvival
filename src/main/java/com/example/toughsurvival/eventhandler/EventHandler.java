@@ -1,5 +1,7 @@
 package com.example.toughsurvival.eventhandler;
 
+import com.example.toughsurvival.itemdata.IItemHydration;
+import com.example.toughsurvival.itemdata.ItemHydrProvider;
 import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
 import com.example.toughsurvival.playerdata.hydrationdata.HydrationProvider;
 import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
@@ -9,6 +11,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.ToolItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -24,6 +30,13 @@ public class EventHandler {
     public static void onEntityConstruction(AttachCapabilitiesEvent<Entity> event){
         if (event.getObject() instanceof PlayerEntity){
             event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "hydration"), new HydrationProvider());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemConstruction(AttachCapabilitiesEvent<ItemStack> event){
+        if (event.getObject().getItem() == Items.GUNPOWDER){
+            event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "itemhydration"), new ItemHydrProvider());
         }
     }
 
@@ -74,5 +87,19 @@ public class EventHandler {
         PlayerEntity player = event.getPlayer();
         IHydration cap = Hydration.getFromPlayer(player);
         ToughSurvival.LOGGER.debug("client hydration = " + cap.getHydration());
+    }
+
+//    @SubscribeEvent
+//    public static void onItemCreation();
+    @SubscribeEvent
+    public static void onItemClick(PlayerInteractEvent.RightClickItem event){
+        if (!event.getWorld().isRemote) {
+            PlayerEntity player = event.getPlayer();
+            if (event.getItemStack().getItem() == Items.GUNPOWDER) {
+                IItemHydration cap = event.getItemStack().getCapability(ItemHydrProvider.ITEM_HYDRATION, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+                int testValue = cap.getHydration();
+                ToughSurvival.LOGGER.debug("test value = " + testValue);
+            }
+        }
     }
 }

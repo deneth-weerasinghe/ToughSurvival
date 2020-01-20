@@ -3,12 +3,14 @@ package com.example.toughsurvival.setup;
 import com.example.toughsurvival.itemdata.IItemHydration;
 import com.example.toughsurvival.itemdata.ItemHydration;
 import com.example.toughsurvival.itemdata.ItemStorage;
+import com.example.toughsurvival.items.ModItems;
 import com.example.toughsurvival.networking.PacketManager;
 import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
 import com.example.toughsurvival.playerdata.hydrationdata.HydrationStorage;
 import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -60,10 +62,16 @@ public class ToughSurvival {
     // Event bus for receiving Registry Events)
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
+
+    }
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
             // register a new block here
             LOGGER.info("HELLO from Register Block");
         }
-    }
+
+        @SubscribeEvent
+        public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
+            event.getRegistry().registerAll(ModItems.APPLE_JUICE);
+        }
 }

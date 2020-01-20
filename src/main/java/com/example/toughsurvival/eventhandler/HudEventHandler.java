@@ -1,14 +1,20 @@
 package com.example.toughsurvival.eventhandler;
 
+import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
+import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
 import com.example.toughsurvival.setup.ToughSurvival;
+import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 @OnlyIn(Dist.CLIENT)
@@ -20,14 +26,14 @@ public class HudEventHandler {
     @SubscribeEvent
     public static void onRenderHud(RenderGameOverlayEvent.Post event) {
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && !event.isCanceled()) {
             Minecraft mc = Minecraft.getInstance();
             PlayerEntity player = (PlayerEntity) mc.getRenderViewEntity();
 
             /* checks if the player is in creative or spectator mode. both of these modes are not
             based on survival so no point in drawing them
             */
-            if (!player.isCreative() || !player.isSpectator()){
+            if (!(player.isCreative() || player.isSpectator())){
 
                 int elementPosX = mc.mainWindow.getScaledWidth() / 2 + 10;
                 int elementPosY = mc.mainWindow.getScaledHeight() - 49;
@@ -44,7 +50,11 @@ public class HudEventHandler {
                 p_blit3 and p_blit4: x and y coords of top left corner of crop from texture file
                 p_blit5 and p_blit6: x and y coords of bottom right corner of crop from texture file
                  */
-                mc.ingameGUI.blit(elementPosX, elementPosY, 0, 0, 80, 8);
+                mc.ingameGUI.blit(elementPosX, elementPosY, 0, 0, 81, 9);
+
+                IHydration cap = Hydration.getFromPlayer(player);
+                int ratio = 81 * cap.getHydration() / Hydration.MAX_HYDRATION;
+                mc.ingameGUI.blit(elementPosX, elementPosY, 0, 9, ratio, 9);
 
             }
         }

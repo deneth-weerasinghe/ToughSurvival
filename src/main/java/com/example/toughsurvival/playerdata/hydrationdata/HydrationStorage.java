@@ -16,6 +16,7 @@ public class HydrationStorage implements Capability.IStorage<IHydration> {
         CompoundNBT tag = new CompoundNBT();
         tag.putInt(HYDRATION_TAG, instance.getHydration());
         tag.putFloat(HYDRATION_DECAY_TAG, instance.getDecayFactor());
+        tag.putInt("timer", instance.getDecayTimer());
 
         return tag;
     }
@@ -26,5 +27,6 @@ public class HydrationStorage implements Capability.IStorage<IHydration> {
         CompoundNBT tag = (CompoundNBT) nbt;
         instance.setHydration(tag.getInt(HYDRATION_TAG));
         instance.setDecayFactor(tag.getFloat(HYDRATION_DECAY_TAG));
+        instance.setDecayTimer(tag.getInt("timer"));
     }
 }

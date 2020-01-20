@@ -16,6 +16,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -108,4 +109,21 @@ public class EventHandler {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onTick(TickEvent.PlayerTickEvent event){
+
+        PlayerEntity player = event.player;
+        World world = player.world;
+        if (!world.isRemote && event.phase == TickEvent.Phase.START){
+            IHydration cap = Hydration.getFromPlayer(player);
+            cap.incrementTimer();
+            ToughSurvival.LOGGER.debug(cap.getDecayTimer());
+            if (cap.getDecayTimer() == 3600){
+                ToughSurvival.LOGGER.debug("3600 reached");
+                cap.setDecayTimer(0);
+            }
+        }
+    }
+
 }

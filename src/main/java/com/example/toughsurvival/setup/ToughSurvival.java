@@ -63,7 +63,6 @@ public class ToughSurvival {
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
 
-    }
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
             // register a new block here
@@ -72,6 +71,8 @@ public class ToughSurvival {
 
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().registerAll(ModItems.APPLE_JUICE);
+            event.getRegistry().register(ModItems.appleJuice.setRegistryName(ToughSurvival.MOD_ID, "apple_juice"));
         }
+    }
 }
+

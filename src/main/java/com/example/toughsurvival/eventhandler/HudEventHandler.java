@@ -3,18 +3,14 @@ package com.example.toughsurvival.eventhandler;
 import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
 import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
 import com.example.toughsurvival.setup.ToughSurvival;
-import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 @OnlyIn(Dist.CLIENT)

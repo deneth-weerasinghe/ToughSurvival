@@ -2,6 +2,8 @@ package com.example.toughsurvival.eventhandler;
 
 import com.example.toughsurvival.itemdata.IItemHydration;
 import com.example.toughsurvival.itemdata.ItemHydrProvider;
+import com.example.toughsurvival.itemdata.ItemHydration;
+import com.example.toughsurvival.items.ModItems;
 import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
 import com.example.toughsurvival.playerdata.hydrationdata.HydrationProvider;
 import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
@@ -34,8 +36,10 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onItemConstruction(AttachCapabilitiesEvent<ItemStack> event){
-        if (event.getObject().getItem() == Items.GUNPOWDER){
+        ItemStack itemStack = event.getObject();
+        if (itemStack.getItem() == Items.GUNPOWDER){
             event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "itemhydration"), new ItemHydrProvider());
+//            ItemHydration.getFromItem(itemStack).setHydration(3);
         }
     }
 
@@ -84,6 +88,11 @@ public class EventHandler {
             else if (testblock == Blocks.GOLD_BLOCK){
                 cap.setHydration(0);
             }
+            else if (testblock == Blocks.IRON_BLOCK){
+                if (event.getItemStack().getItem() == ModItems.berry_juice){
+                    ToughSurvival.LOGGER.debug("ITEM TEST");
+                }
+            }
             ToughSurvival.LOGGER.debug("playerHydration = " + cap.getHydration());
             Hydration.updateClient((ServerPlayerEntity) player, cap);
         }
@@ -103,7 +112,7 @@ public class EventHandler {
         if (!event.getWorld().isRemote) {
             PlayerEntity player = event.getPlayer();
             if (event.getItemStack().getItem() == Items.GUNPOWDER) {
-                IItemHydration cap = event.getItemStack().getCapability(ItemHydrProvider.ITEM_HYDRATION, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
+                IItemHydration cap = ItemHydration.getFromItem(event.getItemStack());
                 int testValue = cap.getHydration();
                 ToughSurvival.LOGGER.debug("test value = " + testValue);
             }

@@ -12,7 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,7 +47,7 @@ public class ToughSurvival {
 
         LOGGER.info("REGISTERING HYDRATION CAPABILITY");
         CapabilityManager.INSTANCE.register(IHydration.class, new HydrationStorage(), Hydration::new);
-        CapabilityManager.INSTANCE.register(IItemHydration.class, new ItemStorage(), ItemHydration::new);
+        CapabilityManager.INSTANCE.register(IItemHydration.class, new ItemStorage(), () -> new ItemHydration(null));
         PacketManager.register();
     }
 
@@ -71,7 +70,10 @@ public class ToughSurvival {
 
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().register(ModItems.appleJuice.setRegistryName(ToughSurvival.MOD_ID, "apple_juice"));
+            event.getRegistry().registerAll(
+                    ModItems.appleJuice.setRegistryName(ToughSurvival.MOD_ID, "apple_juice"),
+                    ModItems.berryJuice.setRegistryName(ToughSurvival.MOD_ID, "berry_juice")
+                            );
         }
     }
 }

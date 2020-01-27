@@ -1,4 +1,4 @@
-package com.example.toughsurvival.itemdata;
+package com.denethweerasinghe.toughsurvival.itemdata;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;

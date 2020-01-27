@@ -1,7 +1,7 @@
-package com.example.toughsurvival.playerdata.hydrationdata;
+package com.denethweerasinghe.toughsurvival.playerdata.hydrationdata;
 
-import com.example.toughsurvival.networking.HydrationSync;
-import com.example.toughsurvival.networking.PacketManager;
+import com.denethweerasinghe.toughsurvival.networking.HydrationSync;
+import com.denethweerasinghe.toughsurvival.networking.PacketManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -11,7 +11,7 @@ public class Hydration implements IHydration {
     // will be useful in other situations for instance when drawing the hydration bar
     public static final int MAX_HYDRATION = 20;
     public static final int RESPAWN_HYDRATION = 16;
-    public static final float DEFAULT_DECAY = 1f;
+    public static final float DEFAULT_DECAY = 1F;
     public static final int TIMER_END = 3600;
 
     private int playerHydration;

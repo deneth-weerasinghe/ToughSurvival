@@ -1,15 +1,14 @@
-package com.example.toughsurvival.setup;
+package com.denethweerasinghe.toughsurvival.setup;
 
-import com.example.toughsurvival.itemdata.IItemHydration;
-import com.example.toughsurvival.itemdata.ItemHydration;
-import com.example.toughsurvival.itemdata.ItemStorage;
-import com.example.toughsurvival.items.ModItems;
-import com.example.toughsurvival.networking.PacketManager;
-import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.example.toughsurvival.playerdata.hydrationdata.HydrationStorage;
-import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.itemdata.IItemHydration;
+import com.denethweerasinghe.toughsurvival.itemdata.ItemHydration;
+import com.denethweerasinghe.toughsurvival.itemdata.ItemStorage;
+import com.denethweerasinghe.toughsurvival.items.ModItems;
+import com.denethweerasinghe.toughsurvival.networking.PacketManager;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.HydrationStorage;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -41,10 +40,6 @@ public class ToughSurvival {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
-
         LOGGER.info("REGISTERING HYDRATION CAPABILITY");
         CapabilityManager.INSTANCE.register(IHydration.class, new HydrationStorage(), Hydration::new);
         CapabilityManager.INSTANCE.register(IItemHydration.class, new ItemStorage(), () -> new ItemHydration(null));
@@ -71,8 +66,13 @@ public class ToughSurvival {
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
             event.getRegistry().registerAll(
-                    ModItems.appleJuice.setRegistryName(ToughSurvival.MOD_ID, "apple_juice"),
-                    ModItems.berryJuice.setRegistryName(ToughSurvival.MOD_ID, "berry_juice")
+                    ModItems.appleJuice.setRegistryName(MOD_ID, "apple_juice"),
+                    ModItems.berryJuice.setRegistryName(MOD_ID, "berry_juice"),
+                    ModItems.waterMelonJuice.setRegistryName(MOD_ID, "watermelon_juice"),
+                    ModItems.pumpkinJuice.setRegistryName(MOD_ID, "pumpkin_juice"),
+                    ModItems.carrotJuice.setRegistryName(MOD_ID, "carrot_juice"),
+                    ModItems.saltWater.setRegistryName(MOD_ID, "salt_water_bottle"),
+                    ModItems.hotChocolate.setRegistryName(MOD_ID, "hot_chocolate")
                             );
         }
     }

@@ -1,11 +1,9 @@
-package com.example.toughsurvival.itemdata;
+package com.denethweerasinghe.toughsurvival.itemdata;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-
-import javax.annotation.Nullable;
 
 public class ItemStorage implements Capability.IStorage<IItemHydration> {
 

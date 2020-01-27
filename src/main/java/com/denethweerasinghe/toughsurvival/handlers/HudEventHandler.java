@@ -1,8 +1,8 @@
-package com.example.toughsurvival.eventhandler;
+package com.denethweerasinghe.toughsurvival.handlers;
 
-import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
-import com.example.toughsurvival.setup.ToughSurvival;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tags.FluidTags;

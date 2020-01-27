@@ -1,8 +1,8 @@
-package com.example.toughsurvival.networking;
+package com.denethweerasinghe.toughsurvival.networking;
 
-import com.example.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.example.toughsurvival.playerdata.hydrationdata.HydrationProvider;
-import com.example.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.HydrationProvider;
+import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;

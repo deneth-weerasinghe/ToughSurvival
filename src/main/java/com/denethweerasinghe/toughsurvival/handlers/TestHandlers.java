@@ -12,14 +12,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
-public class EventHandler {
+public class TestHandlers {
 
+    // for testing purposes
     @SubscribeEvent
     public static void onRightClick(PlayerInteractEvent.RightClickBlock event){
         World world = event.getWorld();
@@ -39,7 +39,7 @@ public class EventHandler {
                 cap.setHydration(0);
             }
             else if (testblock == Blocks.IRON_BLOCK){
-                if (event.getItemStack().getItem() == ModItems.berry_juice){
+                if (event.getItemStack().getItem() == ModItems.berryJuice){
                     ToughSurvival.LOGGER.debug("ITEM TEST");
                 }
             }
@@ -48,6 +48,7 @@ public class EventHandler {
         }
     }
 
+    // for testing purposes
     @SubscribeEvent
     public static void onEmptyClick(PlayerInteractEvent.RightClickEmpty event){
         PlayerEntity player = event.getPlayer();
@@ -55,8 +56,7 @@ public class EventHandler {
         ToughSurvival.LOGGER.debug("client hydration = " + cap.getHydration());
     }
 
-//    @SubscribeEvent
-//    public static void onItemCreation();
+    // for testing purposes
     @SubscribeEvent
     public static void onItemClick(PlayerInteractEvent.RightClickItem event){
         if (!event.getWorld().isRemote) {
@@ -68,21 +68,4 @@ public class EventHandler {
             }
         }
     }
-
-    @SubscribeEvent
-    public static void onTick(TickEvent.PlayerTickEvent event){
-
-        PlayerEntity player = event.player;
-        World world = player.world;
-        if (!world.isRemote && event.phase == TickEvent.Phase.START){
-            IHydration cap = Hydration.getFromPlayer(player);
-            cap.incrementTimer();
-            ToughSurvival.LOGGER.debug(cap.getDecayTimer());
-            if (cap.getDecayTimer() == 3600){
-                ToughSurvival.LOGGER.debug("3600 reached");
-                cap.setDecayTimer(0);
-            }
-        }
-    }
-
 }

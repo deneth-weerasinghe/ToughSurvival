@@ -1,6 +1,6 @@
-package com.example.toughsurvival.networking;
+package com.denethweerasinghe.toughsurvival.networking;
 
-import com.example.toughsurvival.setup.ToughSurvival;
+import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;

@@ -1,4 +1,4 @@
-package com.example.toughsurvival.playerdata.hydrationdata;
+package com.denethweerasinghe.toughsurvival.playerdata.hydrationdata;
 
 public interface IHydration {
 

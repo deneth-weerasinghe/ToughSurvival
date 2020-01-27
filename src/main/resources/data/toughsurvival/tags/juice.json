@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values":[
+    "toughsurvival:apple_juice",
+    "toughsurvival:berry_juice",
+    "toughsurvival:carrot_juice",
+    "toughsurvival:pumpkin_juice",
+    "toughsurvival:watermelon_juice"
+  ]
+}

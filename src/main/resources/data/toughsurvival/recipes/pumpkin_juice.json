@@ -1,0 +1,28 @@
+{
+  "type":"minecraft:crafting_shaped",
+
+  "pattern": [
+    "P",
+    "S",
+    "F"
+  ],
+
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "S": {
+      "item": "minecraft:sugar"
+    },
+    "F": {
+      "item": "minecraft:pumpkin"
+    }
+  },
+
+  "result": {
+    "item": "toughsurvival:pumpkin_juice"
+  },
+
+  "group": "toughsurvival:juice"
+
+}

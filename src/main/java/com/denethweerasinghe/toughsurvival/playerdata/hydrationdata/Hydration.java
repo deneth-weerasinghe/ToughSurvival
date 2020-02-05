@@ -8,12 +8,13 @@ import net.minecraft.nbt.CompoundNBT;
 
 public class Hydration implements IHydration {
 
-    // will be useful in other situations for instance when drawing the hydration bar
+    // useful constants, especially useful in events
     public static final int MAX_HYDRATION = 20;
     public static final int RESPAWN_HYDRATION = 16;
     public static final float DEFAULT_DECAY = 1F;
-    public static final int TIMER_END = 3600;
+    public static final int DEFAULT_TIMER = 3600;
 
+    private int timerEnd;
     private int playerHydration;
     private float decayFactor;
     private int decayTimer;
@@ -22,14 +23,16 @@ public class Hydration implements IHydration {
         this.playerHydration = MAX_HYDRATION;
         this.decayFactor = DEFAULT_DECAY;
         this.decayTimer = 0;
+        this.timerEnd = DEFAULT_TIMER;
     }
 
     @Override
     public void setHydration(int value) {
 
+        //TODO: use Math.min() instead
         this.playerHydration = value;
 
-        // range check: hydration can never be lower than 0 or greater than 20
+        // validation check: hydration can never be lower than 0 or greater than 20
         if (this.playerHydration > MAX_HYDRATION) {
             this.playerHydration = MAX_HYDRATION;
         }
@@ -66,6 +69,16 @@ public class Hydration implements IHydration {
     @Override
     public int getDecayTimer() {
         return decayTimer;
+    }
+
+    @Override
+    public void setTimerEnd(int value) {
+        this.timerEnd = value;
+    }
+
+    @Override
+    public int getTimerEnd() {
+        return timerEnd;
     }
 
     public static IHydration getFromPlayer(PlayerEntity player) {

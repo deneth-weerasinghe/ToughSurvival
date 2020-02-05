@@ -21,17 +21,22 @@ public class HydrationEvents {
         PlayerEntity player = event.player;
         World world = player.world;
 
+        // checks if on the server and checks if firing once or twice per tick
+        // as ticks have two phases
         if (!world.isRemote && event.phase == TickEvent.Phase.START){
 
             IHydration cap = Hydration.getFromPlayer(player);
             cap.incrementTimer();
+
+            // prints the progress of the timer for debugging
             ToughSurvival.LOGGER.debug(cap.getDecayTimer());
 
-            if (cap.getDecayTimer() == Hydration.TIMER_END){
-                ToughSurvival.LOGGER.debug("3600 reached");
+            // if the timer reaches its stopping point
+            if (cap.getDecayTimer() == cap.getTimerEnd()){
+                ToughSurvival.LOGGER.debug("timer end reached");
+
                 cap.setDecayTimer(0);
-                int test = (int) (cap.getHydration() - cap.getDecayFactor());
-                cap.setHydration(test);
+                cap.setHydration(cap.getHydration() - 1);
                 Hydration.updateClient((ServerPlayerEntity) player, cap);
             }
         }
@@ -42,16 +47,15 @@ public class HydrationEvents {
 
         Entity entity = event.getEntity();
 
+        // if the entity is a player
+        // if on server side
         if (entity instanceof PlayerEntity && !entity.world.isRemote()){
+
             IHydration cap = Hydration.getFromPlayer((PlayerEntity) entity);
-            ToughSurvival.LOGGER.debug("this is the player");
 
-            float multiplier = 0.25F;
-
-            if (entity.isSprinting()){
-                multiplier+= 0.1F;
-            }
-            cap.setDecayFactor(cap.getDecayFactor() + 1*multiplier);
+            int decrement = (int) (cap.getTimerEnd() - 0.25 * Hydration.DEFAULT_TIMER);
+            cap.setTimerEnd(decrement);
+            ToughSurvival.LOGGER.debug("Timer decreased by: " + decrement);
         }
     }
 

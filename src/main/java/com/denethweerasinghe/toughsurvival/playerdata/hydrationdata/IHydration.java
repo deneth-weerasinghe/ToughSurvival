@@ -9,4 +9,6 @@ public interface IHydration {
     void setDecayTimer(int value);
     void incrementTimer();
     int getDecayTimer();
+    void setTimerEnd(int value);
+    int getTimerEnd();
 }

@@ -48,10 +48,11 @@ public class HudEventHandler {
                  */
                 mc.ingameGUI.blit(elementPosX, elementPosY, 0, 0, 81, 9);
 
-                IHydration cap = Hydration.getFromPlayer(player);
-                int ratio = 81 * cap.getHydration() / Hydration.MAX_HYDRATION;
-                mc.ingameGUI.blit(elementPosX, elementPosY, 0, 9, ratio, 9);
-
+                if (player.isAlive()) {
+                    IHydration cap = Hydration.getFromPlayer(player);
+                    int ratio = 81 * cap.getHydration() / Hydration.MAX_HYDRATION;
+                    mc.ingameGUI.blit(elementPosX, elementPosY, 0, 9, ratio, 9);
+                }
             }
         }
     }

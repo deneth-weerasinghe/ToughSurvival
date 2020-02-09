@@ -37,24 +37,26 @@ public class TestHandlers {
             }
             else if (testblock == Blocks.GOLD_BLOCK){
                 cap.setHydration(0);
+                cap.setDecayFactor(0);
             }
             else if (testblock == Blocks.IRON_BLOCK){
                 if (event.getItemStack().getItem() == ModItems.berryJuice){
                     ToughSurvival.LOGGER.debug("ITEM TEST");
                 }
             }
+            else return;
             ToughSurvival.LOGGER.debug("playerHydration = " + cap.getHydration());
             Hydration.updateClient((ServerPlayerEntity) player, cap);
         }
     }
 
     // for testing purposes
-    @SubscribeEvent
-    public static void onEmptyClick(PlayerInteractEvent.RightClickEmpty event){
-        PlayerEntity player = event.getPlayer();
-        IHydration cap = Hydration.getFromPlayer(player);
-        ToughSurvival.LOGGER.debug("client hydration = " + cap.getHydration());
-    }
+//    @SubscribeEvent
+//    public static void onEmptyClick(PlayerInteractEvent.RightClickEmpty event){
+//        PlayerEntity player = event.getPlayer();
+//        IHydration cap = Hydration.getFromPlayer(player);
+//        ToughSurvival.LOGGER.debug("client hydration = " + cap.getHydration());
+//    }
 
     // for testing purposes
     @SubscribeEvent

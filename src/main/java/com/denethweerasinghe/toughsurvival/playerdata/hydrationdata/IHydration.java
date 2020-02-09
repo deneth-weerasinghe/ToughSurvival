@@ -6,9 +6,5 @@ public interface IHydration {
     int getHydration();
     void setDecayFactor(float value);
     float getDecayFactor();
-    void setDecayTimer(int value);
-    void incrementTimer();
-    int getDecayTimer();
-    void setTimerEnd(int value);
-    int getTimerEnd();
+    void applyDecay();
 }

@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,6 +19,7 @@ public class HydrationEvents {
     @SubscribeEvent
     public static void onTick(TickEvent.PlayerTickEvent event){
 
+
         PlayerEntity player = event.player;
         World world = player.world;
 
@@ -26,17 +28,27 @@ public class HydrationEvents {
         if (!world.isRemote && event.phase == TickEvent.Phase.START){
 
             IHydration cap = Hydration.getFromPlayer(player);
-            cap.incrementTimer();
 
-            // prints the progress of the timer for debugging
-            ToughSurvival.LOGGER.debug(cap.getDecayTimer());
+            float decay = Hydration.DEFAULT_DECAY;
 
-            // if the timer reaches its stopping point
-            if (cap.getDecayTimer() == cap.getTimerEnd()){
-                ToughSurvival.LOGGER.debug("timer end reached");
+            // additional checks modifying how fast decay is applied
+            if (player.isSprinting()){
+                decay+= 0.1F;
+            }
+            if (player.isSwimming()){
+                decay+= 1;
+            }
 
-                cap.setDecayTimer(0);
+            cap.setDecayFactor(cap.getDecayFactor() - decay);
+
+            if (cap.getDecayFactor() == 0){
+                ToughSurvival.LOGGER.debug("applying decay");
+
+                // reset decay
+                cap.setDecayFactor(36);
                 cap.setHydration(cap.getHydration() - 1);
+
+                // sync with client
                 Hydration.updateClient((ServerPlayerEntity) player, cap);
             }
         }
@@ -50,17 +62,8 @@ public class HydrationEvents {
         // if the entity is a player
         // if on server side
         if (entity instanceof PlayerEntity && !entity.world.isRemote()){
-
             IHydration cap = Hydration.getFromPlayer((PlayerEntity) entity);
-
-            int decrement = (int) (cap.getTimerEnd() - 0.25 * Hydration.DEFAULT_TIMER);
-            cap.setTimerEnd(decrement);
-            ToughSurvival.LOGGER.debug("Timer decreased by: " + decrement);
+            cap.setDecayFactor(cap.getDecayFactor() - 2.5F);
         }
     }
-
-//    @SubscribeEvent
-//    public static void onSwimming(){
-//
-//    }
 }

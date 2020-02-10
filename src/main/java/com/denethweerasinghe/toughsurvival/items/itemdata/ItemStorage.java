@@ -1,4 +1,4 @@
-package com.denethweerasinghe.toughsurvival.itemdata;
+package com.denethweerasinghe.toughsurvival.items.itemdata;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;

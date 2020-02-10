@@ -1,9 +1,9 @@
 package com.denethweerasinghe.toughsurvival.setup;
 
 import com.denethweerasinghe.toughsurvival.handlers.HydrationEvents;
-import com.denethweerasinghe.toughsurvival.itemdata.IItemHydration;
-import com.denethweerasinghe.toughsurvival.itemdata.ItemHydration;
-import com.denethweerasinghe.toughsurvival.itemdata.ItemStorage;
+import com.denethweerasinghe.toughsurvival.items.itemdata.IItemHydration;
+import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
+import com.denethweerasinghe.toughsurvival.items.itemdata.ItemStorage;
 import com.denethweerasinghe.toughsurvival.items.ModItems;
 import com.denethweerasinghe.toughsurvival.networking.PacketManager;
 import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;

@@ -1,21 +1,14 @@
 package com.denethweerasinghe.toughsurvival.handlers;
 
-import com.denethweerasinghe.toughsurvival.itemdata.IItemHydration;
-import com.denethweerasinghe.toughsurvival.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.items.ModItems;
 import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

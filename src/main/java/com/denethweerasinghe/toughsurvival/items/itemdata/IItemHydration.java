@@ -1,4 +1,4 @@
-package com.denethweerasinghe.toughsurvival.itemdata;
+package com.denethweerasinghe.toughsurvival.items.itemdata;
 
 public interface IItemHydration {
     int getHydration();

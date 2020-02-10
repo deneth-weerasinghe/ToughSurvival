@@ -1,7 +1,7 @@
 package com.denethweerasinghe.toughsurvival.handlers;
 
-import com.denethweerasinghe.toughsurvival.itemdata.IItemHydration;
-import com.denethweerasinghe.toughsurvival.itemdata.ItemHydration;
+import com.denethweerasinghe.toughsurvival.items.itemdata.IItemHydration;
+import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;

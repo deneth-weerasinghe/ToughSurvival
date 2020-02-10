@@ -8,8 +8,10 @@ import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PotionItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -29,9 +31,9 @@ public class SetupHandlers {
     @SubscribeEvent
     public static void onItemConstruction(AttachCapabilitiesEvent<ItemStack> event){
         ItemStack itemStack = event.getObject();
-        if (itemStack.getItem() == Items.GUNPOWDER){
-            event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "itemhydration"), new ItemHydrProvider());
-//            ItemHydration.getFromItem(itemStack).setHydration(3);
+        Item item = itemStack.getItem();
+        if (item.isFood() || item instanceof PotionItem || item == Items.MILK_BUCKET || item == Items.WATER_BUCKET){
+            event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "item_hydration"), new ItemHydrProvider());
         }
     }
 

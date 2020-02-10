@@ -6,10 +6,6 @@ public class ItemHydration implements IItemHydration {
 
     private int itemHydration;
 
-    public ItemHydration(Integer value){
-        this.setHydration(value);
-    }
-
     @Override
     public int getHydration() {
         return itemHydration;

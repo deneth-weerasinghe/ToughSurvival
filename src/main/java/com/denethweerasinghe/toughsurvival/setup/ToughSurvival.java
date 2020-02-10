@@ -1,5 +1,6 @@
 package com.denethweerasinghe.toughsurvival.setup;
 
+import com.denethweerasinghe.toughsurvival.handlers.HydrationEvents;
 import com.denethweerasinghe.toughsurvival.itemdata.IItemHydration;
 import com.denethweerasinghe.toughsurvival.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.itemdata.ItemStorage;
@@ -41,9 +42,13 @@ public class ToughSurvival {
 
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("REGISTERING HYDRATION CAPABILITY");
+
         CapabilityManager.INSTANCE.register(IHydration.class, new HydrationStorage(), Hydration::new);
-        CapabilityManager.INSTANCE.register(IItemHydration.class, new ItemStorage(), () -> new ItemHydration(null));
+        CapabilityManager.INSTANCE.register(IItemHydration.class, new ItemStorage(), () -> new ItemHydration());
+
         PacketManager.register();
+
+        MinecraftForge.EVENT_BUS.register(new HydrationEvents(player -> Hydration.getFromPlayer(player).getHydration() <= 8));
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

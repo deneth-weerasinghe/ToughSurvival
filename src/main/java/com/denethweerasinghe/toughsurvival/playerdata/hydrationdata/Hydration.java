@@ -25,7 +25,6 @@ public class Hydration implements IHydration {
     @Override
     public void setHydration(int value) {
 
-        //TODO: use Math.min() instead
         this.playerHydration = Math.min(value, MAX_HYDRATION);
         this.playerHydration = Math.max(playerHydration, 0);
     }
@@ -39,7 +38,7 @@ public class Hydration implements IHydration {
     public void setDecayFactor(float value) {
         this.decayFactor = Math.min(value, 36.0F);
         this.decayFactor = Math.max(decayFactor, 0.0F);
-        ToughSurvival.LOGGER.debug("decayFactor = " + this.decayFactor);
+//        ToughSurvival.LOGGER.debug("decayFactor = " + this.decayFactor);
     }
 
     @Override

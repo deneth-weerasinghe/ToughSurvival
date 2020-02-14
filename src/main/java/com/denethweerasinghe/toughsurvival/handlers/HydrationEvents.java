@@ -2,8 +2,8 @@ package com.denethweerasinghe.toughsurvival.handlers;
 
 import com.denethweerasinghe.toughsurvival.items.itemdata.IItemHydration;
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 
 import java.util.function.Predicate;
 
@@ -76,7 +77,7 @@ public class HydrationEvents {
                     Hydration.updateClient((ServerPlayerEntity) player, cap);
                 }
 
-                // if player passes necessary conditions then disable regeneration
+//                 if player passes necessary conditions then disable regeneration
                 if (regen.get() && this.predicate.test(player)){
                     regen.set(false, world.getServer());
                     this.enable = true;
@@ -103,7 +104,7 @@ public class HydrationEvents {
     }
 
     @SubscribeEvent
-    public static void onItemUse(LivingEntityUseItemEvent.Finish event){
+    public void onItemUse(LivingEntityUseItemEvent.Finish event){
 
         Entity entity = event.getEntity();
 
@@ -131,8 +132,8 @@ public class HydrationEvents {
             }
             else if (item == Items.POTION){
                 cap.setHydration(4);
-                // water bottles are just special potions hence I have to use NBT tags
-                // to get the potion that corresponds to water bottles
+//                 water bottles are just special potions hence I have to use NBT tags
+//                 to get the potion that corresponds to water bottles
                 if (itemStack.getTag().getString("Potion").equals("minecraft:water")){
                     cap.setHydration(10);
                 }

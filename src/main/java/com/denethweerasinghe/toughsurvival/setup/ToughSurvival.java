@@ -6,12 +6,16 @@ import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemStorage;
 import com.denethweerasinghe.toughsurvival.items.ModItems;
 import com.denethweerasinghe.toughsurvival.networking.PacketManager;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.HydrationStorage;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.HydrationStorage;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.IWetness;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.Wetness;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.WetnessStorage;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -43,10 +47,11 @@ public class ToughSurvival {
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("REGISTERING HYDRATION CAPABILITY");
 
+        CapabilityManager.INSTANCE.register(IWetness.class, new WetnessStorage(), Wetness::new);
         CapabilityManager.INSTANCE.register(IHydration.class, new HydrationStorage(), Hydration::new);
         CapabilityManager.INSTANCE.register(IItemHydration.class, new ItemStorage(), () -> new ItemHydration());
 
-        PacketManager.register();
+        PacketManager.register(); // register networking
 
         MinecraftForge.EVENT_BUS.register(new HydrationEvents(player -> Hydration.getFromPlayer(player).getHydration() <= 8));
     }

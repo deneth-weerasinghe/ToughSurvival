@@ -1,5 +1,7 @@
-package com.denethweerasinghe.toughsurvival.playerdata.hydrationdata;
+package com.denethweerasinghe.toughsurvival.playerdata;
 
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.IWetness;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -9,29 +11,38 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 
-public class HydrationProvider implements ICapabilitySerializable<CompoundNBT> {
+public class PlayerProvider<X> implements ICapabilitySerializable<CompoundNBT> {
 
-    @CapabilityInject(IHydration.class)
     // the annotation sets this field to an instance of the capability once registered
+    @CapabilityInject(IHydration.class)
     public static Capability<IHydration> PLAYER_HYDRATION = null;
+    @CapabilityInject(IWetness.class)
+    public static Capability<IWetness> WETNESS = null;
+
     // this holds a temporary value
-    private final LazyOptional<IHydration> instance = LazyOptional.of(PLAYER_HYDRATION::getDefaultInstance);
+    private final LazyOptional<X> instance;
+    private final Capability<X> inject;
+
+    public PlayerProvider(Capability<X> inject) {
+        instance = LazyOptional.of(inject::getDefaultInstance);
+        this.inject = inject;
+    }
 
     @Nonnull
     @Override // getter for the capability
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
-        return cap == PLAYER_HYDRATION ? instance.cast() : LazyOptional.empty();
+        return cap == inject ? instance.cast() : LazyOptional.empty();
     }
 
     @Override // calls the writeNBT method from the HydrationStorage class
     public CompoundNBT serializeNBT() {
-        return (CompoundNBT) PLAYER_HYDRATION.getStorage().writeNBT(PLAYER_HYDRATION, this.instance.orElseThrow(
+        return (CompoundNBT) inject.getStorage().writeNBT(inject, this.instance.orElseThrow(
                 () -> new IllegalArgumentException("LazyOptional must not be empty!")), null);
     }
 
     @Override // calls the readNBT method from the HydrationStorage class
     public void deserializeNBT(CompoundNBT nbt) {
-        PLAYER_HYDRATION.getStorage().readNBT(PLAYER_HYDRATION, this.instance.orElseThrow(
+        inject.getStorage().readNBT(inject, this.instance.orElseThrow(
                 () -> new IllegalArgumentException("LazyOptional must not be empty!")), null, nbt);
     }
 }

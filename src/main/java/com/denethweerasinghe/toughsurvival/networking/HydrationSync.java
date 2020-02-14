@@ -1,8 +1,8 @@
 package com.denethweerasinghe.toughsurvival.networking;
 
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.HydrationProvider;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -37,7 +37,7 @@ public class HydrationSync {
             PlayerEntity player = (PlayerEntity) Minecraft.getInstance().world.getEntityByID(msg.nbt.getInt("entityId"));
             IHydration cap = Hydration.getFromPlayer(player);
 
-            HydrationProvider.PLAYER_HYDRATION.readNBT(cap, null, msg.nbt);
+            PlayerProvider.PLAYER_HYDRATION.readNBT(cap, null, msg.nbt);
         });
         ctx.get().setPacketHandled(true);
     }

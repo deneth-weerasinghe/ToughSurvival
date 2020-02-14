@@ -1,7 +1,7 @@
 package com.denethweerasinghe.toughsurvival.handlers;
 
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;

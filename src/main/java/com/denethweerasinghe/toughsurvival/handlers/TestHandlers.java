@@ -1,14 +1,17 @@
 package com.denethweerasinghe.toughsurvival.handlers;
 
 import com.denethweerasinghe.toughsurvival.items.ModItems;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.IWetness;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.Wetness;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,26 +26,32 @@ public class TestHandlers {
         if (!world.isRemote){
 
             Block testblock = world.getBlockState(event.getPos()).getBlock();
+
             PlayerEntity player = event.getPlayer();
-            IHydration cap = Hydration.getFromPlayer(player);
+            IHydration hydrCap = Hydration.getFromPlayer(player);
+            IWetness wetCap = Wetness.getFromPlayer(player);
 
             if (testblock == Blocks.COBBLESTONE){
-                cap.setHydration(cap.getHydration() + 1);
+                hydrCap.setHydration(hydrCap.getHydration() + 1);
             }
             else if (testblock == Blocks.DIAMOND_BLOCK){
-                cap.setHydration(cap.getHydration() - 1);
+                hydrCap.setHydration(hydrCap.getHydration() - 1);
             }
             else if (testblock == Blocks.GOLD_BLOCK){
-                cap.setHydration(0);
-                cap.setDecayFactor(0);
+                hydrCap.setHydration(0);
+                hydrCap.setDecayFactor(0);
             }
             else if (testblock == Blocks.IRON_BLOCK){
                 if (event.getItemStack().getItem() == ModItems.berryJuice){
                     ToughSurvival.LOGGER.debug("ITEM TEST");
                 }
             }
-            ToughSurvival.LOGGER.debug("playerHydration = " + cap.getHydration());
-            Hydration.updateClient((ServerPlayerEntity) player, cap);
+            else if (testblock == Blocks.LAPIS_BLOCK){
+                wetCap.setWetness(wetCap.getWetness()+1);
+                ToughSurvival.LOGGER.debug(wetCap.getWetness());
+            }
+            ToughSurvival.LOGGER.debug("playerHydration = " + hydrCap.getHydration());
+            Hydration.updateClient((ServerPlayerEntity) player, hydrCap);
         }
     }
 

@@ -1,10 +1,9 @@
-package com.denethweerasinghe.toughsurvival.handlers;
+package com.denethweerasinghe.toughsurvival.setup;
 
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydrProvider;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.HydrationProvider;
-import com.denethweerasinghe.toughsurvival.playerdata.hydrationdata.IHydration;
-import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
+import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
+import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -24,7 +23,8 @@ public class SetupHandlers {
     @SubscribeEvent
     public static void onEntityConstruction(AttachCapabilitiesEvent<Entity> event){
         if (event.getObject() instanceof PlayerEntity){
-            event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "hydration"), new HydrationProvider());
+            event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "hydration"), new PlayerProvider<>(PlayerProvider.PLAYER_HYDRATION));
+            event.addCapability(new ResourceLocation(ToughSurvival.MOD_ID, "wetness"), new PlayerProvider<>(PlayerProvider.WETNESS));
         }
     }
 

@@ -1,7 +1,8 @@
-package com.denethweerasinghe.toughsurvival.playerdata.hydrationdata;
+package com.denethweerasinghe.toughsurvival.playerdata.hydration;
 
 import com.denethweerasinghe.toughsurvival.networking.HydrationSync;
 import com.denethweerasinghe.toughsurvival.networking.PacketManager;
+import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -55,10 +56,10 @@ public class Hydration implements IHydration {
     }
 
     public static IHydration getFromPlayer(PlayerEntity player) {
-        return player.getCapability(HydrationProvider.PLAYER_HYDRATION, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"));
+        return player.getCapability(PlayerProvider.PLAYER_HYDRATION, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"));
     }
 
     public static void updateClient(ServerPlayerEntity player, IHydration cap) {
-        PacketManager.sendTo(player, new HydrationSync(player.getEntityId(), (CompoundNBT) HydrationProvider.PLAYER_HYDRATION.writeNBT(cap, null)));
+        PacketManager.sendTo(player, new HydrationSync(player.getEntityId(), (CompoundNBT) PlayerProvider.PLAYER_HYDRATION.writeNBT(cap, null)));
     }
 }

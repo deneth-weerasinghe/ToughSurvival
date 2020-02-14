@@ -47,14 +47,6 @@ public class Hydration implements IHydration {
         return decayFactor;
     }
 
-    @Override
-    public void applyDecay() {
-        if (this.decayFactor == 0){
-            ToughSurvival.LOGGER.debug("applying decay");
-            this.decayFactor = 36.0F;
-        }
-    }
-
     public static IHydration getFromPlayer(PlayerEntity player) {
         return player.getCapability(PlayerProvider.PLAYER_HYDRATION, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"));
     }

@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -24,6 +25,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.function.Predicate;
 
 public class HydrationEvents {
+
+    private static final DamageSource DEHYDRATION = new DamageSource("dehydration").setDamageBypassesArmor().setDamageIsAbsolute();
 
     private final Predicate<PlayerEntity> predicate;
     private boolean enable;
@@ -169,6 +172,11 @@ public class HydrationEvents {
         }
         if (hydration <= 8){
             player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5, amplifier, true, true));
+        }
+
+        // damages the player entity
+        if (hydration == 0){
+            player.attackEntityFrom(DEHYDRATION, 1.0F);
         }
     }
 }

@@ -7,7 +7,7 @@ public class Wetness implements IWetness {
 
     //useful constants
     public final static int MAX_WETNESS = 100;
-    public final static float DEFAULT_GROWTH = 1F;
+    public final static float DEFAULT_GROWTH = -1F;
 
     private int wetness;
     private float growthFactor;
@@ -20,6 +20,7 @@ public class Wetness implements IWetness {
     @Override
     public void setWetness(int value) {
         this.wetness = Math.min(value, MAX_WETNESS);
+        this.wetness = Math.max(wetness, 0);
     }
 
     @Override

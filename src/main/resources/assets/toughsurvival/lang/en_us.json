@@ -3,8 +3,9 @@
   "item.toughsurvival.berry_juice": "Berry Juice",
   "item.toughsurvival.carrot_juice": "Carrot Juice",
   "item.toughsurvival.pumpkin_juice": "Pumpkin Juice",
-  "item.toughsurvival.watermelon_juice": "Watermelon Juice"
+  "item.toughsurvival.watermelon_juice": "Watermelon Juice",
 
-
+  "death.attack.dehydration": "%1$s run out of water",
+  "death.attack.dehydration.player": "%1$s run out of water while fighting %2$s"
 
 }

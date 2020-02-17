@@ -1,7 +1,12 @@
 package com.denethweerasinghe.toughsurvival.playerdata.wetness;
 
+import com.denethweerasinghe.toughsurvival.networking.HydrationSync;
+import com.denethweerasinghe.toughsurvival.networking.PacketManager;
+import com.denethweerasinghe.toughsurvival.networking.WetnessSync;
 import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 
 public class Wetness implements IWetness {
 
@@ -41,4 +46,9 @@ public class Wetness implements IWetness {
     public static IWetness getFromPlayer(PlayerEntity player){
         return player.getCapability(PlayerProvider.WETNESS, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"));
     }
+
+    public static void updateClient(ServerPlayerEntity player, IWetness cap) {
+        PacketManager.sendTo(player, new WetnessSync(player.getEntityId(), (CompoundNBT) PlayerProvider.WETNESS.writeNBT(cap, null)));
+    }
+
 }

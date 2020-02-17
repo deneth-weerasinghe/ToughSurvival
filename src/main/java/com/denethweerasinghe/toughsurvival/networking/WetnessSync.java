@@ -1,8 +1,7 @@
 package com.denethweerasinghe.toughsurvival.networking;
 
 import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
-import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
-import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
+
 import com.denethweerasinghe.toughsurvival.playerdata.wetness.IWetness;
 import com.denethweerasinghe.toughsurvival.playerdata.wetness.Wetness;
 import net.minecraft.client.Minecraft;
@@ -13,35 +12,33 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PlayerDataSync {
+public class WetnessSync {
 
     private final CompoundNBT nbt;
 
-    public PlayerDataSync(int entityId, CompoundNBT nbt){
+    public WetnessSync(int entityId, CompoundNBT nbt){
         nbt.putInt("entityId", entityId);
         this.nbt = nbt;
     }
 
-    public PlayerDataSync(CompoundNBT nbt){
+    public WetnessSync(CompoundNBT nbt){
         this.nbt = nbt;
     }
 
-    public static void encode(PlayerDataSync msg, PacketBuffer buf){
+    public static void encode(WetnessSync msg, PacketBuffer buf){
         buf.writeCompoundTag(msg.nbt);
     }
 
-    public static PlayerDataSync decode(PacketBuffer buf){
-        return new PlayerDataSync(buf.readCompoundTag());
+    public static WetnessSync decode(PacketBuffer buf){
+        return new WetnessSync(buf.readCompoundTag());
     }
 
-    public static void  handle(PlayerDataSync msg, Supplier<NetworkEvent.Context> ctx){
+    public static void  handle(WetnessSync msg, Supplier<NetworkEvent.Context> ctx){
         ctx.get().enqueueWork(() -> {
             PlayerEntity player = (PlayerEntity) Minecraft.getInstance().world.getEntityByID(msg.nbt.getInt("entityId"));
-            IHydration hydrCap = Hydration.getFromPlayer(player);
-            IWetness wetCap = Wetness.getFromPlayer(player);
+            IWetness cap = Wetness.getFromPlayer(player);
 
-            PlayerProvider.PLAYER_HYDRATION.readNBT(hydrCap, null, msg.nbt);
-            PlayerProvider.WETNESS.readNBT(wetCap, null, msg.nbt);
+            PlayerProvider.WETNESS.readNBT(cap, null, msg.nbt);
         });
         ctx.get().setPacketHandled(true);
     }

@@ -21,10 +21,18 @@ public class PacketManager {
         int id = 0;
         INSTANCE.registerMessage(
                 id++,
-                PlayerDataSync.class,
-                PlayerDataSync::encode,
-                PlayerDataSync::decode,
-                PlayerDataSync::handle);
+                HydrationSync.class,
+                HydrationSync::encode,
+                HydrationSync::decode,
+                HydrationSync::handle
+        );
+        INSTANCE.registerMessage(
+                id++,
+                WetnessSync.class,
+                WetnessSync::encode,
+                WetnessSync::decode,
+                WetnessSync::handle
+        );
     }
 
     public static void sendToServer(Object msg){

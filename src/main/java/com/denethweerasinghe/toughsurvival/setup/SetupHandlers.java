@@ -4,6 +4,7 @@ import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydrProvider;
 import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
 import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.Wetness;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -42,6 +43,7 @@ public class SetupHandlers {
         PlayerEntity player = event.getPlayer();
         if (player instanceof ServerPlayerEntity){
             Hydration.updateClient((ServerPlayerEntity) player, Hydration.getFromPlayer(player));
+            Wetness.updateClient((ServerPlayerEntity) player, Wetness.getFromPlayer(player));
         }
     }
 

@@ -1,6 +1,5 @@
 package com.denethweerasinghe.toughsurvival.playerdata.wetness;
 
-import com.denethweerasinghe.toughsurvival.networking.HydrationSync;
 import com.denethweerasinghe.toughsurvival.networking.PacketManager;
 import com.denethweerasinghe.toughsurvival.networking.WetnessSync;
 import com.denethweerasinghe.toughsurvival.playerdata.PlayerProvider;
@@ -13,8 +12,10 @@ public class Wetness implements IWetness {
     //useful constants
     public final static int MAX_WETNESS = 100;
     public final static float DEFAULT_GROWTH = -1F;
+    public final static int TIMER = 10;
 
     private int wetness;
+    private int timer;
     private float growthFactor;
 
     public Wetness(){
@@ -31,6 +32,16 @@ public class Wetness implements IWetness {
     @Override
     public int getWetness() {
         return wetness;
+    }
+
+    @Override
+    public void setTimer(int value) {
+        this.timer = value;
+    }
+
+    @Override
+    public int getTimer() {
+        return timer;
     }
 
     @Override

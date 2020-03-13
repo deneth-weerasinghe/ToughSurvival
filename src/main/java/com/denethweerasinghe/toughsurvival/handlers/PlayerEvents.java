@@ -4,7 +4,10 @@ import com.denethweerasinghe.toughsurvival.items.itemdata.IItemHydration;
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydration.IHydration;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.IWetness;
+import com.denethweerasinghe.toughsurvival.playerdata.wetness.Wetness;
 import com.denethweerasinghe.toughsurvival.setup.ToughSurvival;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -13,25 +16,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-
 import java.util.function.Predicate;
 
-public class HydrationEvents {
+import static com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration.DEFAULT_DECAY;
+
+public class PlayerEvents {
 
     private static final DamageSource DEHYDRATION = new DamageSource("dehydration").setDamageBypassesArmor().setDamageIsAbsolute();
 
     private final Predicate<PlayerEntity> predicate;
     private boolean enable;
 
-    public HydrationEvents(Predicate<PlayerEntity> predicate) {
+    public PlayerEvents(Predicate<PlayerEntity> predicate) {
         this.predicate = predicate;
     }
 
@@ -45,42 +53,27 @@ public class HydrationEvents {
 
         // checks if on the server and checks if firing once or twice per tick
         // as ticks have two phases
-        if (!world.isRemote) {
+        if (!world.isRemote && !(player.isCreative() || player.isSpectator())) {
 
             // checks if health regeneration has been enabled or not
             GameRules.BooleanValue regen = world.getGameRules().get(GameRules.NATURAL_REGENERATION);
 
             // get hydration form player
-            IHydration cap = Hydration.getFromPlayer(player);
-            int hydration = cap.getHydration();
+            IHydration hydrCap = Hydration.getFromPlayer(player);
+            IWetness wetCap = Wetness.getFromPlayer(player);
 
             if (event.phase == TickEvent.Phase.START) {
 
-                // applies status effects to the player according to the hydration value
-                applyEffects(player, hydration);
+                applyHydrEffects(player, hydrCap.getHydration());
+                manipulateHydr(player, hydrCap, wetCap);
+                manipulateWet(player, world, wetCap);
 
-                float decay = Hydration.DEFAULT_DECAY;
-                // additional checks modifying how fast decay is applied
-                if (player.isSprinting()) {
-                    decay += 0.1F;
-                }
-                if (player.isSwimming()) {
-                    decay += 1;
-                }
+                // sync server and client
+                Hydration.updateClient((ServerPlayerEntity) player, hydrCap);
+                Wetness.updateClient((ServerPlayerEntity) player, wetCap);
 
-                cap.setDecayFactor(cap.getDecayFactor() - decay);
-                if (cap.getDecayFactor() == 0) {
-                    ToughSurvival.LOGGER.debug("applying decay");
 
-                    // reset decay
-                    cap.setDecayFactor(36);
-                    cap.setHydration(hydration - 1);
-
-                    // sync with client
-                    Hydration.updateClient((ServerPlayerEntity) player, cap);
-                }
-
-//                 if player passes necessary conditions then disable regeneration
+//                if player passes necessary conditions then disable regeneration
                 if (regen.get() && this.predicate.test(player)){
                     regen.set(false, world.getServer());
                     this.enable = true;
@@ -156,7 +149,89 @@ public class HydrationEvents {
     }
 
 
-    private static void applyEffects(PlayerEntity player, int hydration){
+
+    private static void manipulateHydr(PlayerEntity player, IHydration hydrCap, IWetness wetCap){
+
+        int hydration = hydrCap.getHydration();
+
+        // applies status effects to the player according to the hydration value
+
+        float decay = DEFAULT_DECAY;
+        // additional checks modifying how fast decay is applied
+        if (player.isSprinting()) {
+            decay += 0.1F;
+        }
+        if (player.isSwimming()) {
+            decay += 1;
+        }
+
+        decay += wetCap.getWetness() * -0.006F * DEFAULT_DECAY;
+
+//        ToughSurvival.LOGGER.debug(hydrCap.getDecayFactor());
+        // apply decay
+        hydrCap.setDecayFactor(hydrCap.getDecayFactor() - decay);
+        if (hydrCap.getDecayFactor() == 0) {
+            ToughSurvival.LOGGER.debug("applying decay");
+
+            // reset decay
+            hydrCap.setDecayFactor(36);
+            hydrCap.setHydration(hydration - 1);
+
+            ToughSurvival.LOGGER.debug("T I M E R "+Minecraft.getInstance().world.getGameTime());
+        }
+
+    }
+
+    private static void manipulateWet(PlayerEntity player, World world, IWetness cap){
+
+        BlockPos pos = player.getPosition();
+        Biome biome = world.getBiome(pos);
+
+        int wetness = cap.getWetness();
+        boolean isInWater = world.getFluidState(pos).isTagged(FluidTags.WATER);
+        boolean isInSnow = biome.getPrecipitation() == Biome.RainType.SNOW;
+
+        // check if wetness should be increased at all (so can start timer)
+        if (isInWater || world.isRaining()){
+
+            // 6 extra wetness per 60 ticks -> 1 per 10 ticks
+            if (isInWater){
+                wetness += 6;
+            }
+            // 3 extra wetness per 60 ticks -> 1 per 20 ticks
+            if (world.isRaining()){
+                wetness += 3;
+                // add 1/3 that of raining instead of the full 3 points
+                // so that instead of +1 every 20 ticks it's +1 every 60 ticks
+                if (isInSnow){
+                    wetness -= 2;
+                    ToughSurvival.LOGGER.debug("snow");
+                }
+            }
+        }
+        else{
+              if (wetness > 0){
+                wetness--;
+            }
+        }
+
+        cap.setTimer(cap.getTimer() + 1);
+
+        ToughSurvival.LOGGER.debug(cap.getTimer());
+
+        // actually add the wetness
+        if (cap.getTimer() == 20){
+            cap.setTimer(0);
+            cap.setWetness(wetness);
+            ToughSurvival.LOGGER.debug("no wetness increase");
+            ToughSurvival.LOGGER.debug(cap.getTimer());
+        }
+
+
+
+    }
+
+    private static void applyHydrEffects(PlayerEntity player, int hydration){
 
         // effects will get worse at this low hydration value
         int amplifier = 0;

@@ -1,6 +1,6 @@
 package com.denethweerasinghe.toughsurvival.setup;
 
-import com.denethweerasinghe.toughsurvival.handlers.HydrationEvents;
+import com.denethweerasinghe.toughsurvival.handlers.PlayerEvents;
 import com.denethweerasinghe.toughsurvival.items.itemdata.IItemHydration;
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemStorage;
@@ -15,7 +15,6 @@ import com.denethweerasinghe.toughsurvival.playerdata.wetness.WetnessStorage;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,7 +52,7 @@ public class ToughSurvival {
 
         PacketManager.register(); // register networking
 
-        MinecraftForge.EVENT_BUS.register(new HydrationEvents(player -> Hydration.getFromPlayer(player).getHydration() <= 8));
+        MinecraftForge.EVENT_BUS.register(new PlayerEvents(player -> Hydration.getFromPlayer(player).getHydration() <= 8));
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

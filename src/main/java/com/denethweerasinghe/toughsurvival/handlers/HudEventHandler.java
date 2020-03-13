@@ -66,8 +66,6 @@ public class HudEventHandler {
                 int wetRatio =  97 * wetness / Wetness.MAX_WETNESS;
                 wetRatio = 97 - wetRatio;
 
-                ToughSurvival.LOGGER.debug(wetness);
-
                 mc.ingameGUI.blit(7 , 7 + wetRatio, 25, 20 + wetRatio, 21, 97 - wetRatio);
             }
         }

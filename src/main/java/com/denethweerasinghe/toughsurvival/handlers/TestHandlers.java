@@ -52,7 +52,7 @@ public class TestHandlers {
 
             }
             else if (testblock == Blocks.LAPIS_BLOCK){
-                wetCap.setWetness(wetCap.getWetness()+1);
+                wetCap.setWetness(0);
                 Wetness.updateClient((ServerPlayerEntity) player, wetCap);
                 Minecraft.getInstance().player.sendChatMessage(String.valueOf(wetCap.getWetness()));
             }

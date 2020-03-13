@@ -20,7 +20,8 @@
   },
 
   "result": {
-    "item": "toughsurvival:apple_juice"
+    "item": "toughsurvival:apple_juice",
+    "count": 16
   },
 
   "group": "toughsurvival:juice"

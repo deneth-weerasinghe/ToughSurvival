@@ -20,7 +20,8 @@
   },
 
   "result": {
-    "item": "toughsurvival:pumpkin_juice"
+    "item": "toughsurvival:pumpkin_juice",
+    "count": 16
   },
 
   "group": "toughsurvival:juice"

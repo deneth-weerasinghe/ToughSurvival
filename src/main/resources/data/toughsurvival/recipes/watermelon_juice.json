@@ -20,7 +20,8 @@
   },
 
   "result": {
-    "item": "toughsurvival:watermelon_juice"
+    "item": "toughsurvival:watermelon_juice",
+    "count": 16
   },
 
   "group": "toughsurvival:juice"

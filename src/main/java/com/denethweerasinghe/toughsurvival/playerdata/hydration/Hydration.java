@@ -14,13 +14,14 @@ public class Hydration implements IHydration {
     public static final int MAX_HYDRATION = 20;
     public static final int RESPAWN_HYDRATION = 16;
     public static final float DEFAULT_DECAY = 0.01F;
+    public static final float MAX_DECAY = 36.0F;
 
     private int playerHydration;
     private float decayFactor;
 
     public Hydration() {
         this.playerHydration = MAX_HYDRATION;
-        this.decayFactor = 36.0F;
+        this.decayFactor = MAX_DECAY;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class Hydration implements IHydration {
 
     @Override
     public void setDecayFactor(float value) {
-        this.decayFactor = Math.min(value, 36.0F);
+        this.decayFactor = Math.min(value, MAX_DECAY);
         this.decayFactor = Math.max(decayFactor, 0.0F);
 //        ToughSurvival.LOGGER.debug("decayFactor = " + this.decayFactor);
     }

@@ -1,5 +1,6 @@
 package com.denethweerasinghe.toughsurvival.handlers;
 
+import com.denethweerasinghe.toughsurvival.items.ModItems;
 import com.denethweerasinghe.toughsurvival.items.itemdata.IItemHydration;
 import com.denethweerasinghe.toughsurvival.items.itemdata.ItemHydration;
 import com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration;
@@ -31,6 +32,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.function.Predicate;
 
 import static com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration.DEFAULT_DECAY;
+import static com.denethweerasinghe.toughsurvival.playerdata.hydration.Hydration.MAX_DECAY;
 
 public class PlayerEvents {
 
@@ -127,11 +129,13 @@ public class PlayerEvents {
                 cap.setHydration(3);
             }
             else if (item == Items.POTION){
-                cap.setHydration(4);
 //                 water bottles are just special potions hence I have to use NBT tags
 //                 to get the potion that corresponds to water bottles
                 if (itemStack.getTag().getString("Potion").equals("minecraft:water")){
                     cap.setHydration(10);
+                }
+                else {
+                    cap.setHydration(4);
                 }
             }
             else if (item == Items.WATER_BUCKET){
@@ -139,6 +143,9 @@ public class PlayerEvents {
             }
             else if (item == Items.MILK_BUCKET){
                 cap.setHydration(6);
+            }
+            else if (item instanceof ModItems.Drink){
+                cap.setHydration(((ModItems.Drink) item).getHydration());
             }
 
             // adding to playerHydration
@@ -174,7 +181,7 @@ public class PlayerEvents {
             ToughSurvival.LOGGER.debug("applying decay");
 
             // reset decay
-            hydrCap.setDecayFactor(36);
+            hydrCap.setDecayFactor(MAX_DECAY);
             hydrCap.setHydration(hydration - 1);
 
             ToughSurvival.LOGGER.debug("T I M E R "+Minecraft.getInstance().world.getGameTime());
@@ -205,7 +212,6 @@ public class PlayerEvents {
                 // so that instead of +1 every 20 ticks it's +1 every 60 ticks
                 if (isInSnow){
                     wetness -= 2;
-                    ToughSurvival.LOGGER.debug("snow");
                 }
             }
         }
@@ -217,14 +223,10 @@ public class PlayerEvents {
 
         cap.setTimer(cap.getTimer() + 1);
 
-        ToughSurvival.LOGGER.debug(cap.getTimer());
-
         // actually add the wetness
         if (cap.getTimer() == 20){
             cap.setTimer(0);
             cap.setWetness(wetness);
-            ToughSurvival.LOGGER.debug("no wetness increase");
-            ToughSurvival.LOGGER.debug(cap.getTimer());
         }
 
 
